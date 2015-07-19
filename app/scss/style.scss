@@ -1,0 +1,10 @@
+$colorBlack: red;
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: $colorBlack;
+  transform: translate(0, 0);
+}
