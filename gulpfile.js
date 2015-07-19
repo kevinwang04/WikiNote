@@ -38,10 +38,9 @@ gulp.task('default', [
 // HTML Autoreload //
 /////////////////////
 
-gulp.task('html', function () {
-  gulp.src('./app/**/*.html')
-  .pipe(plumber())
-  .pipe(connect.reload());
+gulp.task('html', function() {
+  gulp.src('app/*.html')
+    .pipe(connect.reload());
 });
 
 //////////////////////////
@@ -86,5 +85,5 @@ gulp.task('image', function() {
 gulp.task('watch', function() {
   gulp.watch('app/script/*js', ['script']);
   gulp.watch('app/scss/**/*.scss', ['style']);
-  // gulp.watch('app/**/*.html', ['html']);
+  gulp.watch('app/**/*.html', ['html']);
 });
