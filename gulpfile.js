@@ -11,7 +11,6 @@ var gulp = require('gulp'),
   autoprefixer = require('gulp-autoprefixer'),
   connect = require('gulp-connect');
 
-
 //////////////////////////////
 // Simple Livereload Server //
 //////////////////////////////
@@ -35,6 +34,16 @@ gulp.task('default', [
   'watch'
 ]);
 
+/////////////////////
+// HTML Autoreload //
+/////////////////////
+
+gulp.task('html', function () {
+  gulp.src('./app/**/*.html')
+  .pipe(plumber())
+  .pipe(connect.reload());
+});
+
 //////////////////////////
 // Script Related Tasks //
 //////////////////////////
@@ -42,8 +51,8 @@ gulp.task('default', [
 gulp.task('script', function() {
   gulp.src('app/script/*.js')
     .pipe(plumber())
-    .pipe(uglify())
-    .pipe(gulp.dest('app/script/min/'))
+    // .pipe(uglify())
+    // .pipe(gulp.dest('app/script/min/'))
     .pipe(connect.reload());
 });
 
@@ -77,4 +86,5 @@ gulp.task('image', function() {
 gulp.task('watch', function() {
   gulp.watch('app/script/*js', ['script']);
   gulp.watch('app/scss/**/*.scss', ['style']);
+  // gulp.watch('app/**/*.html', ['html']);
 });

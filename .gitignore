@@ -11,3 +11,6 @@ bower_components
 
 # Generated CSS
 *.css
+
+# Generated JavaScript
+app/script/min/*.js
