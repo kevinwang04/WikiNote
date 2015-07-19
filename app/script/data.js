@@ -94,7 +94,7 @@ define('data', function() {
    * @return {array} All notebook objects in array
    */
   var getAllNotebook = function() {
-    return _notebook;
+    return _notebooks;
   };
 
   /**
