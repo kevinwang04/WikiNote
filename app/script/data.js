@@ -3,6 +3,8 @@ define('data', function() {
   // Notebook Data Model //
   /////////////////////////
 
+  // TODO: Use indexDB for Data Model
+
   var _noteId = 1;
   var _notebookId = 1;
 
@@ -28,7 +30,7 @@ define('data', function() {
   /**
    * Check the existence of current notebook
    * @param  {string} notebookName Notebook title
-   * @return {}              [description]
+   * @return {boolean}             The existence of named notebook
    */
   var _checkNotebookExistence = function(notebookName) {
     _notebooks.forEach(function(currentValue) {
@@ -36,12 +38,26 @@ define('data', function() {
         return true;
       }
     });
+    return false;
   };
 
+  /**
+   * Check the existence of selected note title in target notebook
+   * @param  {int} notebookId Notebook ID
+   * @param  {string} noteTitle  Note title
+   * @return {boolean}            The note existence state
+   */
   var _checkNoteExistence = function(notebookId, noteTitle) {
+
     var notebook = getNoteBookById(notebookId);
     if (notebook !== null) {
       var notes = notebook.notes;
+      notes.forEach(function(currentValue) {
+        if (currentValue.title == noteTitle) {
+          return true;
+        }
+      });
+      return false;
     }
   };
 
