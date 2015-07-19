@@ -1,0 +1,13 @@
+# Stupid Mac Generated File(s)
+.DS_Store
+
+# Other Dummy files
+.tmp
+.sass-cache
+
+# Project Dependencies
+node_modules
+bower_components
+
+# Generated CSS
+*css
