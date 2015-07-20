@@ -5,7 +5,7 @@ var gulp = require('gulp'),
   //////////////////
 
   // Shell
-  // shell = require('gulp-shell'),
+  shell = require('gulp-shell'),
 
   // Prepocessing
   uglify = require('gulp-uglify'),
@@ -87,6 +87,17 @@ gulp.task('image', function() {
     .pipe(imagemin())
     .pipe(gulp.dest('app/img/build/'));
 });
+
+///////////////////
+// Shell Command //
+///////////////////
+
+gulp.task('doc', shell.task([
+  'cd ' + __dirname + '/app/src/',
+  'yuidoc . -T simple -c ' + __dirname + '/yuidoc.json',
+  'cd ' + __dirname,
+  'open ' + __dirname + '/WikiNoteAPIDocs/index.html'
+]));
 
 //////////
 // Test //
