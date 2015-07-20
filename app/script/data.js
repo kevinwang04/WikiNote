@@ -1,4 +1,4 @@
-define('data', function() {
+define([], function($) {
   /////////////////////////
   // Notebook Data Model //
   /////////////////////////
