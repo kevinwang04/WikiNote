@@ -1,5 +1,7 @@
 require.config({
   // Default path is `./script/` as same as `data-main`
+  // Alwats make main.js the baseUrl
+
   paths: {
     // 3rd party library
     jquery: '../bower_components/jquery/dist/jquery.min',
@@ -11,7 +13,5 @@ require.config({
 });
 
 // Start the main app logic
-require(['jquery', 'data'], function ($, data) {
-  $('body').css('background', 'darkblue');
-  console.log(data.getAllNotebook());
+require(['data'], function (data) {
 });

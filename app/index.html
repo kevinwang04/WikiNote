@@ -3,18 +3,27 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>WikiNote</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="WikiNote, a Wiki style knowledge management tool">
+
+  <!-- Place favicon.ico in the root directory -->
+
   <link rel="stylesheet" href="./css/style.css" media="screen">
 </head>
 
 <body>
-  <h1>WikiNote</h1>
-  <h2>hello word</h2>
-  <h3></h3>
+  <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
 
-  <button type="button" name="button" id="addbutton">Add</button>
-  <button type="button" name="button" id="popbutton">Pop</button>
-  <script src="../bower_components/requirejs/require.js" data-main="./script/app"></script>
+  <header id="wn-header"></header>
+  <aside id="wn-notebooks"></aside>
+  <aside id="wn-notes"></aside>
+  <section id="wn-note"></section>
+
+  <script src="../bower_components/requirejs/require.js" data-main="src/app"></script>
 </body>
 
 </html>

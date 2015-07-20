@@ -4,11 +4,20 @@ var gulp = require('gulp'),
   // Dependencies //
   //////////////////
 
+  // Shell
+  shell = require('gulp-shell'),
+
+  // Prepocessing
   uglify = require('gulp-uglify'),
   sass = require('gulp-sass'),
-  plumber = require('gulp-plumber'),
   imagemin = require('gulp-imagemin'),
   autoprefixer = require('gulp-autoprefixer'),
+
+  // Error Handling
+  plumber = require('gulp-plumber'),
+
+  // Easy Development :D
+  karmaServer = require('karma').Server,
   connect = require('gulp-connect');
 
 //////////////////////////////
@@ -31,6 +40,7 @@ gulp.task('default', [
   'live-server',
   'script',
   'style',
+  'tdd',
   'watch'
 ]);
 
@@ -39,7 +49,7 @@ gulp.task('default', [
 /////////////////////
 
 gulp.task('html', function() {
-  gulp.src('app/*.html')
+  gulp.src('./app/*.html')
     .pipe(connect.reload());
 });
 
@@ -48,7 +58,7 @@ gulp.task('html', function() {
 //////////////////////////
 
 gulp.task('script', function() {
-  gulp.src('app/script/*.js')
+  gulp.src('app/src/**/*.js')
     .pipe(plumber())
     // .pipe(uglify())
     // .pipe(gulp.dest('app/script/min/'))
@@ -78,12 +88,40 @@ gulp.task('image', function() {
     .pipe(gulp.dest('app/img/build/'));
 });
 
+///////////////////
+// Shell Command //
+///////////////////
+
+gulp.task('doc', shell.task([
+  'cd ' + __dirname + '/app/src/',
+  'yuidoc . -T simple -c ' + __dirname + '/yuidoc.json',
+  'cd ' + __dirname,
+  'open ' + __dirname + '/WikiNoteAPIDocs/index.html'
+]));
+
+//////////
+// Test //
+//////////
+
+gulp.task('test', function(done) {
+  new karmaServer({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }).start();
+});
+
+gulp.task('tdd', function(done) {
+  new karmaServer({
+    configFile: __dirname + '/karma.conf.js',
+  }).start();
+});
+
 /////////////////
 // Watch Tasks //
 /////////////////
 
 gulp.task('watch', function() {
-  gulp.watch('app/script/*js', ['script']);
+  gulp.watch('app/**/**/*.js', ['script', 'tdd']);
   gulp.watch('app/scss/**/*.scss', ['style']);
-  gulp.watch('app/**/*.html', ['html']);
+  gulp.watch('app/*.html', ['html']);
 });
