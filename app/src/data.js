@@ -1,4 +1,5 @@
 /**
+ * 数据模块用于进行笔记数据相关的操作
  * 	@class data
  */
 define([], function() {
@@ -124,6 +125,22 @@ define([], function() {
   };
 
   /**
+   * 通过笔记本名称获取笔记本
+   *
+   * @method getNoteBookByTitle
+   * @param {string} 笔记本名称
+   * @return {object} 笔记本实例对象
+   */
+  var getNoteBookByTitle = function(notebookTitle) {
+    for (var i = 0; i < _notebooks.length; i++) {
+      if (_notebooks[i].title.toLowerCase() == notebookTitle.toLowerCase()) {
+        return _notebooks[i];
+      }
+    }
+    return null;
+  };
+
+  /**
    * 新建一个笔记并将其插入指定 ID 的笔记本之中
    *
    * @method createNote
@@ -142,16 +159,19 @@ define([], function() {
     if (!_checkNotebookExistence(title, notebookId)) {
       var currentTime = Date.now();
       var note = {
-        id: 0,
+        id: _noteId,
         title: title,
         content: content,
         tag: [],
         createDate: currentTime,
         modifyDate: currentTime
       };
+      _noteId++;
 
       notebook.notes.push(note);
+      return true;
     }
+    return false;
   };
 
   /**
@@ -162,7 +182,8 @@ define([], function() {
    * @return {array} 储存在笔记本中的笔记数组
    */
   var getAllNote = function(notebookId) {
-
+    var notebook = getNoteBookById(notebookId);
+    return notebook.notes;
   };
 
   /**
@@ -174,21 +195,52 @@ define([], function() {
    * @return {object} 笔记实例对象
    */
   var getNoteById = function(noteId, notebookID) {
+    var notebook = getNoteBookById(notebookID);
+    var notes = notebook.notes;
+    for (var i = 0; i < notes.length; i++) {
+      var note = notes[i];
+      if (note.id == noteId) {
+        return note;
+      }
+    }
+    return null;
+  };
 
+  /**
+   * 根据笔记的名称从指定的笔记本中取出指定的笔记
+   *
+   * @method getNoteByTitle
+   * @param {string} noteTitle 笔记名称
+   * @param {int} notebookID 笔记本所属 ID
+   * @return {object} 指定笔记本实例对象
+   */
+  var getNoteByTitle = function (noteTitle, notebookID) {
+    var notebook = getNoteBookById(notebookID);
+    var notes = notebook.notes;
+
+    for (var i = 0; i < notes.length; i++) {
+      if (notes[i].title.toLowerCase() == noteTitle.toLowerCase()) {
+        return notes[i];
+      }
+    }
+    return null;
   };
 
   return {
     // Private API (DO NOT USE IT, Testing Purpose ONLY)
     _checkNotebookExistence: _checkNotebookExistence,
+    _checkNoteExistence: _checkNoteExistence,
 
     // Notebook related
     createNotebook: createNotebook,
     getAllNotebook: getAllNotebook,
     getNoteBookById: getNoteBookById,
+    getNoteBookByTitle: getNoteBookByTitle,
 
     // Note related
-    createNote: createNote,
     getAllNote: getAllNote,
-    getNoteById: getNoteById
+    createNote: createNote,
+    getNoteById: getNoteById,
+    getNoteByTitle: getNoteByTitle
   };
 });
