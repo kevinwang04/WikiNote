@@ -1,4 +1,7 @@
-define('data', function() {
+/**
+ * 	@class data
+ */
+define([], function() {
   /////////////////////////
   // Notebook Data Model //
   /////////////////////////
@@ -28,35 +31,40 @@ define('data', function() {
   /////////////////
 
   /**
-   * Check the existence of current notebook
-   * @param  {string} notebookName Notebook title
-   * @return {boolean}             The existence of named notebook
+   * 检查提供的笔记本名是否存在
+   *
+   * @method _checkNotebookExistence
+   * @param  {string} notebookName 笔记本名称
+   * @return {boolean} 笔记本是否存在状态
    */
   var _checkNotebookExistence = function(notebookName) {
-    _notebooks.forEach(function(currentValue) {
-      if (currentValue.title.toLowerCase() == notebookName.toLowerCase()) {
+    for (var i = 0; i < _notebooks.length; i++) {
+      if (_notebooks[i].title.toLowerCase() == notebookName.toLowerCase()) {
         return true;
       }
-    });
+    }
     return false;
   };
 
   /**
-   * Check the existence of selected note title in target notebook
-   * @param  {int} notebookId Notebook ID
-   * @param  {string} noteTitle  Note title
-   * @return {boolean}            The note existence state
+   * 检查所提供的笔记名称是否在指定笔记本中已经存在
+   *
+   * @method _checkNoteExistence
+   * @param  {int} notebookId 笔记本 ID
+   * @param  {string} noteTitle 笔记名称
+   * @return {boolean} 笔记是否存在状态
    */
   var _checkNoteExistence = function(notebookId, noteTitle) {
 
     var notebook = getNoteBookById(notebookId);
     if (notebook !== null) {
       var notes = notebook.notes;
-      notes.forEach(function(currentValue) {
-        if (currentValue.title == noteTitle) {
+
+      for (var i = 0; i < notes.length; i++) {
+        if (notes[i].title.toLowerCase() == noteTitle.toLowerCase()) {
           return true;
         }
-      });
+      }
       return false;
     }
   };
@@ -66,9 +74,11 @@ define('data', function() {
   ////////////////
 
   /**
-   * 	Create a new notebook
-   * @param  {string} title Notebook title (Must be a unique value)
-   * @return {boolean}       Create status
+   * 创建一个新的笔记本并将其保存值笔记本数组中（笔记本实例必须唯一不可重名）
+   *
+   * @method createNotebook
+   * @param  {string} 笔记本名称
+   * @return {boolean} 创建成功状态
    */
   var createNotebook = function(title) {
     if (!_checkNotebookExistence(title)) {
@@ -90,17 +100,21 @@ define('data', function() {
   };
 
   /**
-   * Get all notebook objects inside an array (Atleast one notebook, default)
-   * @return {array} All notebook objects in array
+   * 获取所有现有笔记本
+   *
+   * @method getAllNotebook
+   * @return {array} 返回现有所有保存在数组中的笔记本
    */
   var getAllNotebook = function() {
     return _notebooks;
   };
 
   /**
-   * Get Notebook by ID
-   * @param  {int} id The requested notebook id
-   * @return {object}    Single notebook object
+   * 更具笔记本 ID 获取笔记本
+   *
+   * @method getNoteBookById
+   * @param  {int} id 笔记本 ID
+   * @return {object} 指定 ID 的笔记本示例对象
    */
   var getNoteBookById = function(id) {
     if (id < _notebooks.length) {
@@ -110,10 +124,13 @@ define('data', function() {
   };
 
   /**
-   * Create a note object and add into selected notebook
-   * @param  {string} title   Note title
-   * @param  {string} content Note content in markdown or plain text
-   * @return {boolean}        The state of note creation
+   * 新建一个笔记并将其插入指定 ID 的笔记本之中
+   *
+   * @method createNote
+   * @param  {string} title   笔记标题（唯一不可重复）
+   * @param  {string} content 笔记内容
+   * @param  {int} notebookId 指定笔记本 ID
+   * @return {boolean}        笔记创建状态
    */
   var createNote = function(title, content, notebookId) {
     if (notebookId === undefined) {
@@ -137,13 +154,41 @@ define('data', function() {
     }
   };
 
+  /**
+   *  获取指定笔记本中所有的笔记
+   *
+   * @method getAllNote
+   * @param  {int} notebookId 指定笔记本 ID
+   * @return {array} 储存在笔记本中的笔记数组
+   */
+  var getAllNote = function(notebookId) {
+
+  };
+
+  /**
+   * 从指定 ID 的笔记本中获取指定 ID 的笔记条目
+   *
+   * @method getNoteById
+   * @param  {int} noteId 指定的笔记 ID
+   * @param  {int} notebookID 指定的笔记本 ID
+   * @return {object} 笔记实例对象
+   */
+  var getNoteById = function(noteId, notebookID) {
+
+  };
+
   return {
+    // Private API (DO NOT USE IT, Testing Purpose ONLY)
+    _checkNotebookExistence: _checkNotebookExistence,
+
     // Notebook related
     createNotebook: createNotebook,
     getAllNotebook: getAllNotebook,
     getNoteBookById: getNoteBookById,
 
     // Note related
-    createNote: createNote
+    createNote: createNote,
+    getAllNote: getAllNote,
+    getNoteById: getNoteById
   };
 });

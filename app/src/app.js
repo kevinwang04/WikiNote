@@ -8,7 +8,5 @@ require.config({
 });
 
 // Start the main app logic
-require(['jquery', 'data'], function ($, data) {
-  $('body').css('background', 'darkblue');
-  console.log(data.getAllNotebook());
+require(['data'], function (data) {
 });
