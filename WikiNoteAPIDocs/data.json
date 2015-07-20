@@ -125,6 +125,13 @@
             "fors": {},
             "namespaces": {}
         },
+        "app/script/data.js": {
+            "name": "app/script/data.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "app/src/data.js": {
             "name": "app/src/data.js",
             "modules": {},
@@ -1435,6 +1442,111 @@
             "class": "data"
         },
         {
+            "file": "app/script/data.js",
+            "line": 30,
+            "description": "Check the existence of current notebook",
+            "params": [
+                {
+                    "name": "notebookName",
+                    "description": "Notebook title",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The existence of named notebook",
+                "type": "Boolean"
+            },
+            "class": "data"
+        },
+        {
+            "file": "app/script/data.js",
+            "line": 44,
+            "description": "Check the existence of selected note title in target notebook",
+            "params": [
+                {
+                    "name": "notebookId",
+                    "description": "Notebook ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "noteTitle",
+                    "description": "Note title",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The note existence state",
+                "type": "Boolean"
+            },
+            "class": "data"
+        },
+        {
+            "file": "app/script/data.js",
+            "line": 68,
+            "description": "Create a new notebook",
+            "params": [
+                {
+                    "name": "title",
+                    "description": "Notebook title (Must be a unique value)",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Create status",
+                "type": "Boolean"
+            },
+            "class": "data"
+        },
+        {
+            "file": "app/script/data.js",
+            "line": 92,
+            "description": "Get all notebook objects inside an array (Atleast one notebook, default)",
+            "return": {
+                "description": "All notebook objects in array",
+                "type": "Array"
+            },
+            "class": "data"
+        },
+        {
+            "file": "app/script/data.js",
+            "line": 100,
+            "description": "Get Notebook by ID",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "The requested notebook id",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "Single notebook object",
+                "type": "Object"
+            },
+            "class": "data"
+        },
+        {
+            "file": "app/script/data.js",
+            "line": 112,
+            "description": "Create a note object and add into selected notebook",
+            "params": [
+                {
+                    "name": "title",
+                    "description": "Note title",
+                    "type": "String"
+                },
+                {
+                    "name": "content",
+                    "description": "Note content in markdown or plain text",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The state of note creation",
+                "type": "Boolean"
+            },
+            "class": "data"
+        },
+        {
             "file": "app/src/data.js",
             "line": 34,
             "description": "检查提供的笔记本名是否存在",
@@ -2207,6 +2319,30 @@
         {
             "message": "Missing item type\nExecutes the text. Normally just uses eval, but can be modified\nto use a better, environment-specific call. Only used for transpiling\nloader plugins, not for plain JS modules.",
             "line": " app/bower_components/requirejs/require.js:2077"
+        },
+        {
+            "message": "Missing item type\nCheck the existence of current notebook",
+            "line": " app/script/data.js:30"
+        },
+        {
+            "message": "Missing item type\nCheck the existence of selected note title in target notebook",
+            "line": " app/script/data.js:44"
+        },
+        {
+            "message": "Missing item type\nCreate a new notebook",
+            "line": " app/script/data.js:68"
+        },
+        {
+            "message": "Missing item type\nGet all notebook objects inside an array (Atleast one notebook, default)",
+            "line": " app/script/data.js:92"
+        },
+        {
+            "message": "Missing item type\nGet Notebook by ID",
+            "line": " app/script/data.js:100"
+        },
+        {
+            "message": "Missing item type\nCreate a note object and add into selected notebook",
+            "line": " app/script/data.js:112"
         }
     ]
 }

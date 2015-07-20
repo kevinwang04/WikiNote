@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>app/bower_components/jquery/src/ajax/load.js - WikiNote API</title>
+    <title>app/script/data.js - WikiNote API</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.8.0pr2/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -13,7 +13,7 @@
 <div id="doc">
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
-            <h1><a href="../index.html"><img src="../assets/css/logo.png" width="117" height="52">WikiNote API: app/bower_components/jquery/src/ajax/load.js</a></h1>
+            <h1><a href="../index.html"><img src="../assets/css/logo.png" width="117" height="52">WikiNote API: app/script/data.js</a></h1>
         </div>
         <div class="yui3-u-1-4 version">
             <em>API Docs for: 0.1.0</em>
@@ -59,83 +59,157 @@
         </div>
 
         <div id="main" class="yui3-u">
-            <div class="content"><h4>app/bower_components/jquery/src/ajax/load.js</h4>
+            <div class="content"><h4>app/script/data.js</h4>
 
 <pre class="code prettyprint linenums">
-define([
-	&quot;../core&quot;,
-	&quot;../core/parseHTML&quot;,
-	&quot;../ajax&quot;,
-	&quot;../traversing&quot;,
-	&quot;../manipulation&quot;,
-	&quot;../selector&quot;,
-	// Optional event/alias dependency
-	&quot;../event/alias&quot;
-], function( jQuery ) {
+define([], function($) {
+  /////////////////////////
+  // Notebook Data Model //
+  /////////////////////////
 
-// Keep a copy of the old load method
-var _load = jQuery.fn.load;
+  // TODO: Use indexDB for Data Model
 
-/**
- * Load a url into a page
- */
-jQuery.fn.load = function( url, params, callback ) {
-	if ( typeof url !== &quot;string&quot; &amp;&amp; _load ) {
-		return _load.apply( this, arguments );
-	}
+  var _noteId = 1;
+  var _notebookId = 1;
 
-	var selector, type, response,
-		self = this,
-		off = url.indexOf(&quot; &quot;);
+  var _notebooks = [{
+    id: 0,
+    title: &quot;default&quot;,
+    createDate: 1437313304462,
+    modifyDate: 1437313304462,
+    notes: [{
+      id: 0,
+      title: &quot;WikiNote&quot;,
+      content: &quot;**Hello, world!**&quot;,
+      tag: [],
+      createDate: 1437313304462,
+      modifyDate: 1437313304462
+    }]
+  }];
 
-	if ( off &gt;= 0 ) {
-		selector = jQuery.trim( url.slice( off ) );
-		url = url.slice( 0, off );
-	}
+  /////////////////
+  // Private API //
+  /////////////////
 
-	// If it&#x27;s a function
-	if ( jQuery.isFunction( params ) ) {
+  /**
+   * Check the existence of current notebook
+   * @param  {string} notebookName Notebook title
+   * @return {boolean}             The existence of named notebook
+   */
+  var _checkNotebookExistence = function(notebookName) {
+    _notebooks.forEach(function(currentValue) {
+      if (currentValue.title.toLowerCase() == notebookName.toLowerCase()) {
+        return true;
+      }
+    });
+    return false;
+  };
 
-		// We assume that it&#x27;s the callback
-		callback = params;
-		params = undefined;
+  /**
+   * Check the existence of selected note title in target notebook
+   * @param  {int} notebookId Notebook ID
+   * @param  {string} noteTitle  Note title
+   * @return {boolean}            The note existence state
+   */
+  var _checkNoteExistence = function(notebookId, noteTitle) {
 
-	// Otherwise, build a param string
-	} else if ( params &amp;&amp; typeof params === &quot;object&quot; ) {
-		type = &quot;POST&quot;;
-	}
+    var notebook = getNoteBookById(notebookId);
+    if (notebook !== null) {
+      var notes = notebook.notes;
+      notes.forEach(function(currentValue) {
+        if (currentValue.title == noteTitle) {
+          return true;
+        }
+      });
+      return false;
+    }
+  };
 
-	// If we have elements to modify, make the request
-	if ( self.length &gt; 0 ) {
-		jQuery.ajax({
-			url: url,
+  ////////////////
+  // Public API //
+  ////////////////
 
-			// if &quot;type&quot; variable is undefined, then &quot;GET&quot; method will be used
-			type: type,
-			dataType: &quot;html&quot;,
-			data: params
-		}).done(function( responseText ) {
+  /**
+   * 	Create a new notebook
+   * @param  {string} title Notebook title (Must be a unique value)
+   * @return {boolean}       Create status
+   */
+  var createNotebook = function(title) {
+    if (!_checkNotebookExistence(title)) {
+      var currentTime = Date.now();
 
-			// Save response for use in complete callback
-			response = arguments;
+      var notebook = {
+        id: _notebookId,
+        title: title,
+        createDate: currentTime,
+        modifyDate: currentTime
+      };
+      _notebooks.push(notebook);
 
-			self.html( selector ?
+      _notebookId++;
 
-				// If a selector was specified, locate the right elements in a dummy div
-				// Exclude scripts to avoid IE &#x27;Permission Denied&#x27; errors
-				jQuery(&quot;&lt;div&gt;&quot;).append( jQuery.parseHTML( responseText ) ).find( selector ) :
+      return true;
+    }
+    return false;
+  };
 
-				// Otherwise use the full result
-				responseText );
+  /**
+   * Get all notebook objects inside an array (Atleast one notebook, default)
+   * @return {array} All notebook objects in array
+   */
+  var getAllNotebook = function() {
+    return _notebooks;
+  };
 
-		}).complete( callback &amp;&amp; function( jqXHR, status ) {
-			self.each( callback, response || [ jqXHR.responseText, status, jqXHR ] );
-		});
-	}
+  /**
+   * Get Notebook by ID
+   * @param  {int} id The requested notebook id
+   * @return {object}    Single notebook object
+   */
+  var getNoteBookById = function(id) {
+    if (id &lt; _notebooks.length) {
+      return _notebooks[id];
+    }
+    return null;
+  };
 
-	return this;
-};
+  /**
+   * Create a note object and add into selected notebook
+   * @param  {string} title   Note title
+   * @param  {string} content Note content in markdown or plain text
+   * @return {boolean}        The state of note creation
+   */
+  var createNote = function(title, content, notebookId) {
+    if (notebookId === undefined) {
+      notebookId = 0;
+    }
 
+    var notebook = getNoteBookById(0);
+
+    if (!_checkNotebookExistence(title, notebookId)) {
+      var currentTime = Date.now();
+      var note = {
+        id: 0,
+        title: title,
+        content: content,
+        tag: [],
+        createDate: currentTime,
+        modifyDate: currentTime
+      };
+
+      notebook.notes.push(note);
+    }
+  };
+
+  return {
+    // Notebook related
+    createNotebook: createNotebook,
+    getAllNotebook: getAllNotebook,
+    getNoteBookById: getNoteBookById,
+
+    // Note related
+    createNote: createNote
+  };
 });
 
 </pre>
