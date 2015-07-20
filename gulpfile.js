@@ -4,6 +4,9 @@ var gulp = require('gulp'),
   // Dependencies //
   //////////////////
 
+  // Shell
+  // shell = require('gulp-shell'),
+
   // Prepocessing
   uglify = require('gulp-uglify'),
   sass = require('gulp-sass'),
