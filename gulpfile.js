@@ -4,11 +4,16 @@ var gulp = require('gulp'),
   // Dependencies //
   //////////////////
 
+  // Prepocessing
   uglify = require('gulp-uglify'),
   sass = require('gulp-sass'),
-  plumber = require('gulp-plumber'),
   imagemin = require('gulp-imagemin'),
   autoprefixer = require('gulp-autoprefixer'),
+
+  // Error Handling
+  plumber = require('gulp-plumber'),
+
+  // Easy Development :D
   connect = require('gulp-connect');
 
 //////////////////////////////
@@ -39,7 +44,7 @@ gulp.task('default', [
 /////////////////////
 
 gulp.task('html', function() {
-  gulp.src('app/*.html')
+  gulp.src('./app/*.html')
     .pipe(connect.reload());
 });
 
@@ -78,6 +83,12 @@ gulp.task('image', function() {
     .pipe(gulp.dest('app/img/build/'));
 });
 
+//////////
+// Test //
+//////////
+
+
+
 /////////////////
 // Watch Tasks //
 /////////////////
@@ -85,5 +96,5 @@ gulp.task('image', function() {
 gulp.task('watch', function() {
   gulp.watch('app/script/*js', ['script']);
   gulp.watch('app/scss/**/*.scss', ['style']);
-  gulp.watch('app/**/*.html', ['html']);
+  gulp.watch('app/*.html', ['html']);
 });
