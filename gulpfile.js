@@ -14,6 +14,7 @@ var gulp = require('gulp'),
   plumber = require('gulp-plumber'),
 
   // Easy Development :D
+  karmaServer = require('karma').Server,
   connect = require('gulp-connect');
 
 //////////////////////////////
@@ -36,6 +37,7 @@ gulp.task('default', [
   'live-server',
   'script',
   'style',
+  'tdd',
   'watch'
 ]);
 
@@ -53,7 +55,7 @@ gulp.task('html', function() {
 //////////////////////////
 
 gulp.task('script', function() {
-  gulp.src('app/script/*.js')
+  gulp.src('app/src/**/*.js')
     .pipe(plumber())
     // .pipe(uglify())
     // .pipe(gulp.dest('app/script/min/'))
@@ -87,14 +89,25 @@ gulp.task('image', function() {
 // Test //
 //////////
 
+gulp.task('test', function(done) {
+  new karmaServer({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }).start();
+});
 
+gulp.task('tdd', function(done) {
+  new karmaServer({
+    configFile: __dirname + '/karma.conf.js',
+  }).start();
+});
 
 /////////////////
 // Watch Tasks //
 /////////////////
 
 gulp.task('watch', function() {
-  gulp.watch('app/script/*js', ['script']);
+  gulp.watch('app/**/**/*.js', ['script', 'tdd']);
   gulp.watch('app/scss/**/*.scss', ['style']);
   gulp.watch('app/*.html', ['html']);
 });
